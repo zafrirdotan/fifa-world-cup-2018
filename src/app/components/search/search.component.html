@@ -1,0 +1,34 @@
+<form class="example-form">
+  <mat-form-field class="example-full-width">
+    <input
+      matInput
+      placeholder="search"
+      aria-label="Search"
+      [matAutocomplete]="auto"
+      [formControl]="searchBar"
+    />
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option
+        *ngFor="let stadium of filteredStadiums | async"
+        [value]="stadium"
+        (click)="selectStadium(stadium)"
+      >
+        <span>{{ stadium }}</span>
+        <!-- <img class="example-option-img" aria-hidden [src]="stadium.flag" height="25">
+        <span>{{stadium.name}}</span> |
+        <small>Population: {{stadium.population}}</small> -->
+      </mat-option>
+      <mat-option
+        *ngFor="let team of filteredTeams | async"
+        [value]="stadium"
+        (click)="selectTeam(team)"
+      >
+        <span>{{ team }}</span>
+        <!-- <img class="example-option-img" aria-hidden [src]="stadium.flag" height="25">
+      <span>{{stadium.name}}</span> |
+      <small>Population: {{stadium.population}}</small> -->
+      </mat-option>
+      
+    </mat-autocomplete>
+  </mat-form-field>
+</form>
