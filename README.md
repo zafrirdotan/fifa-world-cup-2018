@@ -30,8 +30,8 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 Changes to csv file via excel was done by converting the results column to be of special type "d - m".
 The problem was that the csv result column mixed two data types: text and date.   
 
-##Parsing csv
+## Parsing csv
 The parsing was don using ngx-papaparse package.
 
-##User interface and styling
+## User interface and styling
 User interface is mostly based on angular-material package. 
