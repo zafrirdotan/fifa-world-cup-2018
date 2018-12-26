@@ -25,3 +25,13 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+## Changes to csv file via excel 
+Changes to csv file via excel was done by converting the results column to be of special type "d - m".
+The problem was that the csv result column mixed two data types: text and date.   
+
+#Parsing csv
+The parsing was don using ngx-papaparse package.
+
+#User interface and styling
+User interface is mostly based on angular-material package. 

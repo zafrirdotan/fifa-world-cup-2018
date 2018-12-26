@@ -13,28 +13,30 @@ export class GameListComponent {
   games: Game[] = [];
   Stadium: string;
   displayedColumns: string[] = [
-    'Away Team',
+    'Stadium',
+    'Date',
     'Group',
+    'Round Number',
+    'Away Team',
     'Home Team',
     'Result',
-    'Round Number',
-    'Stadium',
   ];
 
   constructor(private appService: AppService, public dialog: MatDialog) {
     this.appService.selectedGames$.subscribe(games => {
+      console.log(games);
+      
       this.games = games;
     });
   }
+
   openDialog(selectedGame: Game): void {
     const dialogRef = this.dialog.open(GameDetailsComponent, {
-      width: '250px',
+      width: '500px',
+      height: '500px',
       data: selectedGame,
     });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      // this.animal = result;
-    });
+ 
   }
+
 }

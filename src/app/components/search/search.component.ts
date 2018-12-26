@@ -32,44 +32,43 @@ export class SearchComponent {
   constructor(private appService: AppService) {
     this.stadiums = this.appService.getStadiums();
     this.teams = this.appService.getTeams();
-    console.log(this.stadiums, this.teams);
     this.setAutoCompleteFilters();
   }
 
-  setAutoCompleteFilters() {
+  // This method listens for changes in the search bar input and filters the
+  // stadium and team lists each one separately
+  setAutoCompleteFilters(): void {
     this.filteredStadiums = this.searchBarObserver(
-      this.filterByStadium.bind(this)
+      this.filterList.bind(this, this.stadiums)
     );
-    this.filteredTeams = this.searchBarObserver(this.filterByTeam.bind(this));
+    this.filteredTeams = this.searchBarObserver(
+      this.filterList.bind(this, this.teams)
+    );
   }
+  // This method is a reuseable method that observes the search bar
+  // It takes an filter callback function as is parameter and based on it
+  // returns a observable of array of strings.
 
   searchBarObserver(filter: Function): Observable<string[]> {
     return this.searchBar.valueChanges.pipe(
-      // wait 300ms after each keystroke before considering the term
+      // Wait 300ms after each keystroke before considering the term
       debounceTime(300),
 
-      // ignore new term if same as previous term
+      // Ignore new term if same as previous term
       distinctUntilChanged(),
 
+      // For every term return a filtered array
       map((term: string) => {
         return term && term !== '' ? filter(term) : [];
       })
     );
   }
 
-  filterByStadium(term: string) {
-    return this.stadiums.filter(stadium => {
+  filterList(array: string[], term: string): string[] {
+    return array.filter(item => {
       term = term.toLowerCase();
-      stadium = stadium.toLowerCase();
-      return stadium.startsWith(term);
-    });
-  }
-
-  filterByTeam(term: string) {
-    return this.teams.filter(team => {
-      term = term.toLowerCase();
-      team = team.toLowerCase();
-      return team.startsWith(term);
+      item = item.toLowerCase();
+      return item.startsWith(term);
     });
   }
 

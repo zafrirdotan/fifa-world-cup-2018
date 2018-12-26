@@ -9,11 +9,6 @@ import { Observable, from, of, Subject } from 'rxjs';
 })
 export class AppService {
   games: Game[];
-  options = {
-    header: true,
-    skipEmptyLines: true,
-  };
-
   stadiums: string[];
   teams: string[];
 
@@ -24,12 +19,15 @@ export class AppService {
     this.loadGames();
   }
 
-  loadGames() {
+  private loadGames() {
     this.http
       .get('assets/fifa-world-cup-2018.csv', { responseType: 'text' })
       .subscribe(
         data => {
-          let result = this.papa.parse(data, this.options);
+          let result = this.papa.parse(data, {
+            header: true,
+            skipEmptyLines: true,
+          });
           this.games = result.data;
           this.setStadiums();
           this.setTeams();
@@ -40,57 +38,56 @@ export class AppService {
       );
   }
 
-  getGameByStadium(stadium: string): Game[] {
-    console.log( this.games);
-    
-    return this.games.filter((game)=>{
+  private filterGameByStadium(stadium: string): Game[] {
+    console.log(this.games);
+
+    return this.games.filter(game => {
       return stadium === game.Stadium;
     });
   }
 
-  getGameByTeam(team: string): Game[] {
-    console.log( this.games);
-    return this.games.filter((game)=>{
-      return team === game["Away Team"]|| team === game["Home Team"];
+  private filterGameByTeam(team: string): Game[] {
+    console.log(this.games);
+    return this.games.filter(game => {
+      return team === game['Away Team'] || team === game['Home Team'];
     });
   }
 
-  setTeams() {
+  private setTeams() {
     let allTeams: string[] = this.games.map((game: Game) => {
       return game['Home Team'];
     });
     this.teams = this.getUnique(allTeams);
   }
 
-  setStadiums(): void {
+  public getTeams(): string[] {
+    return this.teams;
+  }
+
+  private setStadiums(): void {
     let allStadiums: string[] = this.games.map((game: Game) => {
       return game['Stadium'];
     });
     this.stadiums = this.getUnique(allStadiums);
   }
 
-  getStadiums(): string[] {
+  public getStadiums(): string[] {
     return this.stadiums;
   }
 
-  getTeams(): string[] {
-    return this.teams;
-  }
-
-  getUnique(array: string[]): any[] {
+  private getUnique(array: string[]): any[] {
     return Array.from(new Set(array));
   }
 
-  selectStadium(stadium: string){
+  public selectStadium(stadium: string) {
     console.log(stadium);
-    let games = this.getGameByStadium(stadium);
+    let games = this.filterGameByStadium(stadium);
     this.selectedGames$.next(games);
   }
-  
-  selectTeam(team: string){
+
+  public selectTeam(team: string) {
     console.log(team);
-    let games = this.getGameByTeam(team);
+    let games = this.filterGameByTeam(team);
     this.selectedGames$.next(games);
   }
-  
 }

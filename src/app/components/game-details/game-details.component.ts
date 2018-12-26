@@ -18,5 +18,4 @@ export class GameDetailsComponent {
   onNoClick(): void {
     this.dialogRef.close();
   }
-  ngOnInit() {}
 }
